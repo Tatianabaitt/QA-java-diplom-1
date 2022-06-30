@@ -5,7 +5,7 @@ import praktikum.IngredientType;
 
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class IngredientTest {
 
@@ -49,5 +49,13 @@ public class IngredientTest {
         Ingredient ingredient = new Ingredient(IngredientType.FILLING, nameIngredient, priceIngredient);
         String actualTypeIngredient = ingredient.getType().toString();
         assertEquals(message, expectedType, actualTypeIngredient);
+    }
+
+    @Test
+    public void checkEqualsClassIngredientAndOtherClass() {
+        String message = "Для метода equals() класса Ingredient получено некорректное значение";
+        String otherClass = "Test";
+        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
+        assertNotEquals(message, ingredient, otherClass);
     }
 }

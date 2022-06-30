@@ -1,9 +1,10 @@
 import org.junit.Test;
 import praktikum.Bun;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class BunTest {
 
@@ -25,5 +26,13 @@ public class BunTest {
         Bun bun = new Bun(nameBun, expectedPriceBun);
         float actualPriceBug = bun.getPrice();
         assertEquals(message, expectedPriceBun, actualPriceBug, 0.0f);
+    }
+
+    @Test
+    public void checkEqualsClassBunAndOtherClass() {
+        String message = "Для метода equals() класса Bug получено некорректное значение";
+        String otherClass = "Test";
+        Bun bun = new Bun("black bun", 100);
+        assertNotEquals(message, bun, otherClass);
     }
 }

@@ -22,4 +22,11 @@ public class Bun {
         return price;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bun bun = (Bun) o;
+        return Float.compare(bun.price, price) == 0 && name.equals(bun.name);
+    }
 }
