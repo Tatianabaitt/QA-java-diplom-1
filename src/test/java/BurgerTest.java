@@ -1,7 +1,8 @@
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import praktikum.*;
 
 import static org.junit.Assert.*;
@@ -9,25 +10,48 @@ import static praktikum.IngredientType.*;
 
 public class BurgerTest {
 
+    @Mock
+    Ingredient ingredient1;
+    @Mock
+    Ingredient ingredient2;
+    @Mock
+    Ingredient ingredient0;
+    @Mock
+    Bun bun;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        Mockito.when(bun.getName()).thenReturn("red bun");
+        Mockito.when(bun.getPrice()).thenReturn(567.0F);
+        Mockito.when(ingredient0.getType()).thenReturn(SAUCE);
+        Mockito.when(ingredient0.getName()).thenReturn("hot sauce");
+        Mockito.when(ingredient0.getPrice()).thenReturn(100F);
+        Mockito.when(ingredient1.getType()).thenReturn(FILLING);
+        Mockito.when(ingredient1.getName()).thenReturn("cutlet");
+        Mockito.when(ingredient1.getPrice()).thenReturn(300.1F);
+        Mockito.when(ingredient2.getType()).thenReturn(SAUCE);
+        Mockito.when(ingredient2.getName()).thenReturn("chili sauce");
+        Mockito.when(ingredient2.getPrice()).thenReturn(999.13F);
+    }
+
     @Test
     public void checkSetBuns() {
         String message = "Для метода setBuns() класса Burger получено некорректное значение";
         Burger burger = new Burger();
-        Bun bun_test = new Bun("black bun", 100);
-        burger.setBuns(bun_test);
-        assertEquals(message, burger.bun, bun_test);
+        burger.setBuns(bun);
+        assertEquals(message, burger.bun, bun);
     }
 
     @Test
     public void checkAddIngredient() {
         String message = "Для метода addIngredient() класса Burger получено некорректное значение";
         Burger burger = new Burger();
-        Ingredient expectedIngredient = new Ingredient(SAUCE, "hot sauce", 100);
         int expectedSizeListIngredients = burger.ingredients.size() + 1;
-        burger.addIngredient(expectedIngredient);
+        burger.addIngredient(ingredient1);
         int actualSizeListIngredients = burger.ingredients.size();
         assertEquals(message, expectedSizeListIngredients, actualSizeListIngredients);
-        assertEquals(message, burger.ingredients.get(burger.ingredients.size() - 1), expectedIngredient);
+        assertEquals(message, burger.ingredients.get(burger.ingredients.size() - 1), ingredient1);
     }
 
     @Test
@@ -35,27 +59,20 @@ public class BurgerTest {
         int countChosenIngredient = 0;
         String message = "Для метода removeIngredient() класса Burger получено некорректное значение";
         Burger burger = new Burger();
-        Ingredient ingredient1 = new Ingredient(SAUCE, "hot sauce", 200);
-        Ingredient ingredient_remove = new Ingredient(SAUCE, "hot sauce", 100);
-        Ingredient ingredient3 = new Ingredient(SAUCE, "sour cream", 100);
+        burger.ingredients.add(ingredient0);
         burger.ingredients.add(ingredient1);
-        burger.ingredients.add(ingredient_remove);
-        burger.ingredients.add(ingredient3);
-        int expectedSizeListIngredients = burger.ingredients.size() - 1;
+        burger.ingredients.add(ingredient2);
         for (Ingredient ingredient : burger.ingredients) {
-            if (ingredient.equals(ingredient_remove)) {
+            if (ingredient.equals(ingredient1)) {
                 countChosenIngredient += 1;
             }
         }
         burger.removeIngredient(1);
-        int actualSizeListIngredients = burger.ingredients.size();
-        assertEquals(message, expectedSizeListIngredients, actualSizeListIngredients);
         for (Ingredient ingredient : burger.ingredients) {
-            if (ingredient.equals(ingredient_remove)) {
+            if (ingredient.equals(ingredient1)) {
                 countChosenIngredient -= 1;
             }
         }
-        System.out.println(countChosenIngredient);
         assertEquals(message, 1, countChosenIngredient);
     }
 
@@ -63,9 +80,6 @@ public class BurgerTest {
     public void checkMoveIngredient() {
         String message = "Для метода moveIngredient() класса Burger получено некорректное значение";
         Burger burger = new Burger();
-        Ingredient ingredient0 = new Ingredient(SAUCE, "hot sauce", 200);
-        Ingredient ingredient1 = new Ingredient(SAUCE, "hot sauce", 100);
-        Ingredient ingredient2 = new Ingredient(SAUCE, "sour cream", 100);
         burger.ingredients.add(ingredient0);
         burger.ingredients.add(ingredient1);
         burger.ingredients.add(ingredient2);
@@ -83,18 +97,10 @@ public class BurgerTest {
         float expectedPrice = 2533.23F;
         String message = "Для метода getPrice() класса Burger получено некорректное значение";
         Burger burger = new Burger();
-        Ingredient ingredient_1 = Mockito.mock(Ingredient.class);
-        Mockito.when(ingredient_1.getPrice()).thenReturn(100F);
-        Ingredient ingredient_2 = Mockito.mock(Ingredient.class);
-        Mockito.when(ingredient_2.getPrice()).thenReturn(300.1F);
-        Ingredient ingredient_3 = Mockito.mock(Ingredient.class);
-        Mockito.when(ingredient_3.getPrice()).thenReturn(999.13F);
-        Bun bun = Mockito.mock(Bun.class);
-        Mockito.when(bun.getPrice()).thenReturn(567.0F);
         burger.setBuns(bun);
-        burger.addIngredient(ingredient_1);
-        burger.addIngredient(ingredient_2);
-        burger.addIngredient(ingredient_3);
+        burger.addIngredient(ingredient0);
+        burger.addIngredient(ingredient1);
+        burger.addIngredient(ingredient2);
         float actualPrice = burger.getPrice();
         assertEquals(message, expectedPrice, actualPrice, 0.0f);
     }
@@ -103,23 +109,12 @@ public class BurgerTest {
     public void checkGetReceipt() {
         String message = "Для метода getReceipt() класса Burger получено некорректное значение";
         Burger burger = Mockito.spy(Burger.class);
-        Ingredient ingredient_1 = Mockito.mock(Ingredient.class);
-        Mockito.when(ingredient_1.getName()).thenReturn("hot sauce");
-        Mockito.when(ingredient_1.getType()).thenReturn(SAUCE);
-        Ingredient ingredient_2 = Mockito.mock(Ingredient.class);
-        Mockito.when(ingredient_2.getName()).thenReturn("cutlet");
-        Mockito.when(ingredient_2.getType()).thenReturn(FILLING);
-        Ingredient ingredient_3 = Mockito.mock(Ingredient.class);
-        Mockito.when(ingredient_3.getName()).thenReturn("chili sauce");
-        Mockito.when(ingredient_3.getType()).thenReturn(SAUCE);
-        Bun bun = Mockito.mock(Bun.class);
-        Mockito.when(bun.getPrice()).thenReturn(567.0F);
-        Mockito.when(bun.getName()).thenReturn("red bun");
         burger.setBuns(bun);
-        burger.addIngredient(ingredient_1);
-        burger.addIngredient(ingredient_2);
-        burger.addIngredient(ingredient_3);
-        Mockito.when(burger.getPrice()).thenReturn(2533.23F);
+        burger.addIngredient(ingredient0);
+        burger.addIngredient(ingredient1);
+        burger.addIngredient(ingredient2);
+        float priceBurger = bun.getPrice() * 2 + ingredient0.getPrice() + ingredient1.getPrice() + ingredient2.getPrice();
+        Mockito.when(burger.getPrice()).thenReturn(priceBurger);
         StringBuilder expectedReceipt = new StringBuilder(String.format("(==== red bun ====)%n"));
         expectedReceipt.append("= sauce hot sauce =\n");
         expectedReceipt.append("= filling cutlet =\n");

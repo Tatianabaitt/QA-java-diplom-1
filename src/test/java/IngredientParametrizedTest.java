@@ -19,7 +19,7 @@ public class IngredientParametrizedTest {
         this.expected = expected;
     }
 
-    @Parameterized.Parameters // добавили аннотацию
+    @Parameterized.Parameters(name = "Тестовые данные: {0} {1} {2}") // добавили аннотацию
     public static Object[][] getIngredients() {
         Ingredient ingredient;
         return new Object[][]{

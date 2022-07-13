@@ -36,7 +36,16 @@ public class Ingredient {
 <span class="fc bfc" id="L36" title="All 2 branches covered.">        if (this == o) return true;</span>
 <span class="fc bfc" id="L37" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) return false;</span>
 <span class="fc" id="L38">        Ingredient that = (Ingredient) o;</span>
-<span class="fc bfc" id="L39" title="All 6 branches covered.">        return Float.compare(that.price, price) == 0 &amp;&amp; type == that.type &amp;&amp; Objects.equals(name, that.name);</span>
+<span class="fc bfc" id="L39" title="All 6 branches covered.">        return Float.compare(that.getPrice(), getPrice()) == 0 &amp;&amp; getType() == that.getType() &amp;&amp; Objects.equals(getName(), that.getName());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L44">        return &quot;Ingredient{&quot; +</span>
+                &quot;type=&quot; + type +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, price=&quot; + price +
+                '}';
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
